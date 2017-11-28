@@ -25,6 +25,16 @@
         }
         // we will restore the intercepted SMS here, for later restore
         var smsList = [];
+        var filter = {
+                box : 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+                
+                // following 4 filters should NOT be used together, they are OR relationship
+                address : 'MPESA', // sender's phone number
+                
+                // following 2 filters can be used to list page up/down
+                indexFrom : 0, // start from index 0
+                maxCount : 50, // count of SMS to return each time
+            };
         var interceptEnabled = false;
         function initApp() {
             if (! SMS ) { alert( 'SMS plugin not ready' ); return; }
@@ -64,9 +74,8 @@
         }
         function listSMS() {
             updateData('');
-            
-            if(SMS) SMS.listSMS({}, function(data){
-                updateStatus('sms listed as json array');
+            if(SMS) SMS.listSMS(filter, function(data){
+               updateStatus('sms listed as json array');
                 //updateData( JSON.stringify(data) );
                 
                 var html = "";
