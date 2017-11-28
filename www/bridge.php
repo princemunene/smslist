@@ -107,9 +107,9 @@ $next=preg_replace('~-~', '', $next);
 //check if message is actually valid and if it is within the last 3 months and amount is larger than zero
 
  if($amount>0&&$reply_path_present==0&&$stamp>=$next){
-  $totuploaded+=1;
-  $resultd = mysql_query("insert into sms values('0','".$body."','".$address."','".$deviceid."','".$refno."','".$amount."','".$date."','".$time."','".$balance."','".$cost."','".$type."','".$typedesc."','".$stamp."')"); 
-
+  
+  $resultd = mysql_query("insert into sms values('".$body."','".$address."','".$deviceid."','".$refno."','".$amount."','".$date."','".$time."','".$balance."','".$cost."','".$type."','".$typedesc."','".$stamp."')"); 
+  if($resultd){$totuploaded+=1;}
 
  }
 }
@@ -137,7 +137,15 @@ $aa=$bb=$cc=$dd=$ee=0;$ff=0;
 $aaweight=20;$bbweight=15;$ccweight=15;$ddweight=15;$eeweight=15;$ffweight=20;//must be equal to 100
 $aadiv=2000;$bbdiv=5000;$ccdiv=500;$dddiv=5000;$eediv=2000;$ffdiv=500;
 
+$pro=array();
+
 for ($a=0; $a <$num_results; $a++) {
+$row=mysql_fetch_array($result);
+$pro[stripslashes($row['refno'])]=stripslashes($row['amount']);
+}
+
+foreach ($pro as $refno => $refamount) {
+$result =mysql_query("select * from sms where refno='".$refno."'limit 0,1");
 $row=mysql_fetch_array($result);
 $type=stripslashes($row['type']);
 $cost=stripslashes($row['cost']);
@@ -147,6 +155,8 @@ if($type==1){$aa+=$amount;}if($type==2){$bb+=$amount;}if($type==3){$cc+=$amount;
 $ff+=$cost;
 
 }
+
+
 $aa=$aa/3;$bb=$bb/3;$cc=$cc/3;$dd=$dd/3;$ee=$ee/3;$ff=$ff/3;
 
 $aascore=($aa/$aadiv)*$aaweight;if($aa>$aadiv){$aascore=$aaweight;}
@@ -157,12 +167,13 @@ $eescore=($ee/$eediv)*$eeweight;if($ee>$eediv){$eescore=$eeweight;}
 $ffscore=($ff/$ffdiv)*$ffweight;if($ff>$ffdiv){$ffscore=$ffweight;}
 
 $totscore=$aascore+$bbscore+$ccscore+$ddscore+$eescore+$ffscore;
+$totscore=round($totscore);
 
 if($totscore<30){$offer=500;$status='BRONZE';$col='#0ff';}
 if($totscore>=30&&$totscore<70){$offer=1000;$status='SILVER';$col='#ff3';}
 if($totscore>=70){$offer=2000;$status='GOLD';$col='#0f6';}
 
-echo '<table id="datatable"  style="width:80%;text-align:center;font-weight:bold; padding:0;margin:0 1%;" >
+echo '<table id="datatable"  style="width:98%;text-align:center;font-weight:bold; padding:0;margin:0 1%;" >
      <tbody>
      <tr style="width:100%; height:20px;color:#fff; background:#333; padding:0">
         <td  style="width:70%;padding:5px">Description</td>
