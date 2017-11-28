@@ -17,23 +17,38 @@ switch($id){
      
 case 1:
 $smslist=$_POST['smslist'];
-echo $smslist;
+//echo $smslist;
 
-//$smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
-$resultd = mysql_query("insert into sms values('0','".$_POST['smslist']."')"); 
+$smslist = $_SESSION['smslist']= json_decode( $_POST['smslist'], true );
+$type=0;$typedesc='';
+$filters=array();
+$filters[1]='paid to';$filters[2]='withdraw';$filters[3]='of airtime';$filters[4]='paid to';$filters[5]='sent to';$filters[6]='have received';
 
-/*
-print_r($smslist);
-
-print_r($smslist);
 $max=count($_SESSION['smslist']);
-for ($i = 1; $i < $max; $i++){
-$itcode = $_SESSION['smslist'][$i][0];
+for ($i = 0; $i < $max; $i++){
+$deviceid = $_SESSION['smslist'][$i]["sim_imsi"];
+$address = $_SESSION['smslist'][$i]["address"];
+$body = $_SESSION['smslist'][$i]["body"];
+$body=mysql_real_escape_string(trim($body));
 
+$pieces=explode(" ",$body);
+$refno=$pieces[0];
+$amount=filter_var( $pieces[3], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+$date=$pieces[7];
+$time=$pieces[9];
+$balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+$cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+foreach ($filters as $key => $val) {
+    if (strpos($body, $val) !== false) {
+        $type=$key;
+        $typedesc=$val;
+    }
+}
+$resultd = mysql_query("insert into sms values('0','".$body."','".$address."','".$deviceid."','".$refno."','".$amount."','".$date."','".$time."','".$balance."','".$cost."','".$type."','".$typedesc."')"); 
 
 }
 
-*/
+
 
 
 break;

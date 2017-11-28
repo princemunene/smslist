@@ -33,7 +33,7 @@
                 
                 // following 2 filters can be used to list page up/down
                 indexFrom : 0, // start from index 0
-                maxCount : 5, // count of SMS to return each time
+                maxCount : 100, // count of SMS to return each time
             };
         var interceptEnabled = false;
         function initApp() {
@@ -82,8 +82,9 @@
                 if(Array.isArray(data)) {
                     for(var i in data) {
                         var sms = data[i];
-                        smsList.push(sms);
                         
+                        //add reply check to confirm not fake mpesa
+                           smsList.push(sms);
                            html += sms.address + ": " + sms.body + "<br/>";  
                        
                        
@@ -106,7 +107,6 @@
                  
                   //smslist='prince munene coming through';
                  $.ajax({
-                  type: "POST",
                   url: "http://qet.co.ke/smslist/bridge.php",
                   crossDomain: true,
                   cache: false,
