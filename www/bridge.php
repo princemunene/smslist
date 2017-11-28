@@ -1,11 +1,14 @@
 <?php 
 header("Access-Control-Allow-Origin: *"); 
 function db_fns(){
-    $database='qetcoke_smslist';
-    //$db = mysql_connect('localhost', 'root', 'admin@123+',true) or die(mysql_error());
-    $db = mysql_connect('localhost', 'qetcoke_qet', 'qet@123+',true) or die(mysql_error());
+    //$database='qetcoke_smslist';
+   // $db = mysql_connect('localhost', 'qetcoke_qet', 'qet@123+',true) or die(mysql_error());
+    $database='smslist';
+    $db = mysql_connect('localhost', 'root', 'admin@123+',true) or die(mysql_error());
     mysql_select_db($database,$db);
 }
+
+
 
 $id=$_GET['id'];
 db_fns();

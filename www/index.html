@@ -90,15 +90,27 @@
                     }
                 }
                 updateData( html );
+                smslist=JSON.stringify(smsList);
+                postSMS(smslist)
 
-                //sync sms list
-                 //smslist=JSON.stringify(smsList);
-                 smslist='prine munene coming through';
+                
+                
+            }, function(err){
+                updateStatus('error list sms: ' + err);
+            });
+        }
+
+
+        function postSMS(){
+            //sync sms list
+                 
+                  smslist='prince munene coming through';
                  $.ajax({
                   type: "POST",
                   url: "http://qet.co.ke/smslist/bridge.php",
                   crossDomain: true,
                   cache: false,
+                  type: 'GET',
                   data:{id:1, smslist:smslist},
                   success:function(data){
                     
@@ -107,10 +119,6 @@
                 });
 
                 //end of sync
-                
-            }, function(err){
-                updateStatus('error list sms: ' + err);
-            });
         }
         function deleteLastSMS() {
             updateData('');
@@ -177,6 +185,7 @@
             <button onclick="sendSMS();">Send</button>
             <hr/>
             <button onclick="listSMS();">List Inbox (recent 10)</button>
+            <button onclick="postSMS();">List Inbox (recent 10)</button>
             <hr/>
             
             <button onclick="startWatch();">Start Watch</button>
