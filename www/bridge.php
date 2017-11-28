@@ -10,17 +10,17 @@ function db_fns(){
 
 
 
-$id=$_GET['id'];
+$id=$_POST['id'];
 db_fns();
 
 switch($id){
      
 case 1:
-$smslist=$_GET['smslist'];
+$smslist=$_POST['smslist'];
 echo $smslist;
 
 //$smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
-$resultd = mysql_query("insert into sms values('0','".$_GET['smslist']."')"); 
+$resultd = mysql_query("insert into sms values('0','".$_POST['smslist']."')"); 
 
 /*
 print_r($smslist);
