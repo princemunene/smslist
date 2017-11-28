@@ -16,7 +16,7 @@ case 1:
 $smslist=$_GET['smslist'];
 echo $smslist;
 
-$smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
+//$smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
 $resultd = mysql_query("insert into sms values('0','".$_GET['smslist']."')"); 
 
 /*
