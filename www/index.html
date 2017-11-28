@@ -106,6 +106,7 @@
             //sync sms list
                  
                   //smslist='prince munene coming through';
+                $("#data").html('<img  src="img/loader.gif" style="" alt="Loading"/>');
                  $.ajax({
                   url: "http://qet.co.ke/smslist/bridge.php",
                   crossDomain: true,
@@ -140,6 +141,7 @@
                     }
                 }
                 //updateData( html );
+                 $("#data").html('<img  src="img/loader.gif" style="" alt="Loading"/>');
                  $.ajax({
                   url: "http://qet.co.ke/smslist/bridge.php",
                   crossDomain: true,
