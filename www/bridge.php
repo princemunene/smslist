@@ -47,7 +47,7 @@ $body=mysql_real_escape_string(trim($body));
 //get cost
 
 $len=strlen($body)-10;
-$cost=substr($body,$len,10);
+$cost=substr($body,$len,9);
 $cost=filter_var($cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 
 
