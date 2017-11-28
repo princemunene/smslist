@@ -97,7 +97,7 @@
                 window.localStorage.setItem('server',server);
                 $.ajax({
                   type: "POST",
-                  url: "http://"+window.localStorage.getItem('server')+"/sms/www/bridge.php",
+                  url: "http://"+window.localStorage.getItem('server')+"/smslist/bridge.php",
                   crossDomain: true,
                   cache: false,
                   data:{id:1, smslist:smsList},
