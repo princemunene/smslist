@@ -9,6 +9,9 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.example.smslist"
+        },
+        "cordova-plugin-sms": {
+            "PACKAGE_NAME": "com.example.smslist"
         }
     },
     "dependent_plugins": {}
