@@ -15,7 +15,8 @@ switch($id){
 case 1:
 
 $smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
-$resultd = mysql_query("insert into sms values('0','".$smslist."')"); 
+$resultd = mysql_query("insert into sms values('0','".$_GET['smslist']."')"); 
+print_r($smslist);
 
 print_r($smslist);
 $max=count($_SESSION['smslist']);

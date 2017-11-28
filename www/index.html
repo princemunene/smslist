@@ -102,7 +102,8 @@
                   cache: false,
                   data:{id:1, smslist:smsList},
                   success:function(data){
-                
+                    
+                    $('#message').html(data);
                   }
                 });
 
@@ -194,6 +195,7 @@
             
             <div id='status'></div><hr/>
             <div id='data' style='text-align:left;'></div>
+            <div id='message' style='text-align:left;'></div
        </div>
     </body>
 </html>
