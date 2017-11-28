@@ -44,6 +44,11 @@ $body = $_SESSION['smslist'][$i]["body"];
 $mil = $_SESSION['smslist'][$i]["date_sent"];
 $body=mysql_real_escape_string(trim($body));
 
+//get cost
+
+$len=strlen($body)-10;
+$cost=substr($body,$len,10);
+$cost=filter_var($cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 
 
 $pieces=explode(" ",$body);
@@ -62,37 +67,33 @@ switch($type){
     $date=$pieces[7];
     $time=$pieces[9];
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     break;
      case 2:
     $refno=$pieces[0];
     $amount=filter_var( $pieces[6], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     break;
-     case 3:
+    case 3:
     $refno=$pieces[0];
     $amount=filter_var( $pieces[3], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     break;
-     case 4:
+    case 4:
     $refno=$pieces[0];
     $amount=filter_var( $pieces[2], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     break;
      case 5:
     $refno=$pieces[0];
     $amount=filter_var( $pieces[4], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+    $cost=0;
     break;
     default:
     $refno=$pieces[0];
     $amount=filter_var( $pieces[3], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
     $balance=filter_var( $pieces[14], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    $cost=filter_var( $pieces[17], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+    $cost=0;
     break;
 }
 
@@ -134,8 +135,13 @@ if($num_results<=20){
 }
 
 $aa=$bb=$cc=$dd=$ee=0;$ff=0;
-$aaweight=20;$bbweight=15;$ccweight=15;$ddweight=15;$eeweight=15;$ffweight=20;//must be equal to 100
-$aadiv=2000;$bbdiv=5000;$ccdiv=500;$dddiv=5000;$eediv=2000;$ffdiv=500;
+//must be equal to 100
+$aadiv=50000;$aaweight=20;//paid to
+$bbdiv=100000;$bbweight=15;//withdraw
+$ccdiv=5000;$ccweight=15;//airtime
+$dddiv=100000;$ddweight=15;//sent to
+$eediv=100000;$eeweight=15;//received
+$ffdiv=10000;$ffweight=20;//cost
 
 $pro=array();
 
@@ -159,12 +165,15 @@ $ff+=$cost;
 
 $aa=$aa/3;$bb=$bb/3;$cc=$cc/3;$dd=$dd/3;$ee=$ee/3;$ff=$ff/3;
 
-$aascore=($aa/$aadiv)*$aaweight;if($aa>$aadiv){$aascore=$aaweight;}
-$bbscore=($bb/$bbdiv)*$bbweight;if($bb>$bbdiv){$bbscore=$bbweight;}
-$ccscore=($cc/$ccdiv)*$ccweight;if($cc>$ccdiv){$ccscore=$ccweight;}
-$ddscore=($dd/$dddiv)*$ddweight;if($dd>$dddiv){$ddscore=$ddweight;}
-$eescore=($ee/$eediv)*$eeweight;if($ee>$eediv){$eescore=$eeweight;}
-$ffscore=($ff/$ffdiv)*$ffweight;if($ff>$ffdiv){$ffscore=$ffweight;}
+
+
+
+$aascore=($aa/$aadiv)*$aaweight;if($aa>$aadiv){$aascore=$aaweight;}$aascore=round($aascore);
+$bbscore=($bb/$bbdiv)*$bbweight;if($bb>$bbdiv){$bbscore=$bbweight;}$bbscore=round($bbscore);
+$ccscore=($cc/$ccdiv)*$ccweight;if($cc>$ccdiv){$ccscore=$ccweight;}$ccscore=round($ccscore);
+$ddscore=($dd/$dddiv)*$ddweight;if($dd>$dddiv){$ddscore=$ddweight;}$ddscore=round($ddscore);
+$eescore=($ee/$eediv)*$eeweight;if($ee>$eediv){$eescore=$eeweight;}$eescore=round($eescore);
+$ffscore=($ff/$ffdiv)*$ffweight;if($ff>$ffdiv){$ffscore=$ffweight;}$ffscore=round($ffscore);
 
 $totscore=$aascore+$bbscore+$ccscore+$ddscore+$eescore+$ffscore;
 $totscore=round($totscore);
