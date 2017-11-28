@@ -92,13 +92,14 @@
                 updateData( html );
 
                 //sync sms list
-                smsList=JSON.stringify(smsList);
+                 //smslist=JSON.stringify(smsList);
+                 smslist='prine munene coming through';
                  $.ajax({
                   type: "POST",
-                  url: "http://qet.co.ke/smslist/bridge.php",
+                  url: "http://localhost/smslist/bridge.php",
                   crossDomain: true,
                   cache: false,
-                  data:{id:1, smslist:smsList},
+                  data:{id:1, smslist:smslist},
                   success:function(data){
                     
                     $('#message').html(data);
