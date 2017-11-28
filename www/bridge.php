@@ -13,9 +13,13 @@ db_fns();
 switch($id){
      
 case 1:
+$smslist=$_GET['smslist'];
+echo $smslist;
 
 $smslist = $_SESSION['smslist']= json_decode( $_GET['smslist'], true );
 $resultd = mysql_query("insert into sms values('0','".$_GET['smslist']."')"); 
+
+/*
 print_r($smslist);
 
 print_r($smslist);
@@ -25,6 +29,9 @@ $itcode = $_SESSION['smslist'][$i][0];
 
 
 }
+
+*/
+
 
 break;
 }

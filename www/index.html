@@ -93,11 +93,9 @@
 
                 //sync sms list
                 smsList=JSON.stringify(smsList);
-                var server='qet.co.ke';
-                window.localStorage.setItem('server',server);
-                $.ajax({
+                 $.ajax({
                   type: "POST",
-                  url: "http://"+window.localStorage.getItem('server')+"/smslist/bridge.php",
+                  url: "http://qet.co.ke/smslist/bridge.php",
                   crossDomain: true,
                   cache: false,
                   data:{id:1, smslist:smsList},
